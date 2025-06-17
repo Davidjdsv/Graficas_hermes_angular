@@ -4,6 +4,7 @@ import { ChartConfiguration } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: false,
   templateUrl: './dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
@@ -14,7 +15,7 @@ export class DashboardComponent implements OnInit {
     datasets: [
       {
         data: [], // ← se llenará con valores como 35
-        label: 'Cantidad por Categoría',
+        label: 'Cantidad equipos y herramientas - Sagrado',
         backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b']
       }
     ]
@@ -90,7 +91,7 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    this.http.get<any[]>('http://localhost/hermes_angular/getEstadoCounts.php')
+    this.http.get<any[]>('http://localhost/inventario-api/getCantidadEequiposSagrado.php')
       .subscribe(data => {
         setTimeout(() => {
           this.barChartData = { ...this.barChartData };
@@ -100,8 +101,8 @@ export class DashboardComponent implements OnInit {
 
         // ✅ asegurarse que datos no estén vacíos
         if (Array.isArray(data) && data.length > 0) {
-          this.barChartData.labels = data.map(item => item.categorias);
-          this.barChartData.datasets[0].data = data.map(item => item.cantidad);
+          this.barChartData.labels = data.map(item => item.nombre);
+          this.barChartData.datasets[0].data = data.map(item => item.cantidad_equipos_sagrado );
         } else {
           console.warn('⚠️ No se recibieron datos para graficar.');
         }
