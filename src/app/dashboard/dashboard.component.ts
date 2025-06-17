@@ -9,6 +9,7 @@ import { ChartConfiguration } from 'chart.js';
 })
 export class DashboardComponent implements OnInit {
   public barChartType: 'bar' = 'bar';
+  public num: number = 0
 
   public barChartData: ChartConfiguration<'bar'>['data'] = {
     labels: [], // ← se llenará con nombres como 'Portátiles'
@@ -103,6 +104,7 @@ export class DashboardComponent implements OnInit {
         if (Array.isArray(data) && data.length > 0) {
           this.barChartData.labels = data.map(item => item.nombre);
           this.barChartData.datasets[0].data = data.map(item => item.cantidad_equipos_sagrado );
+          this.num = data.reduce((sum, item) => sum + parseInt(item.cantidad_equipos_sagrado), 0)
         } else {
           console.warn('⚠️ No se recibieron datos para graficar.');
         }
